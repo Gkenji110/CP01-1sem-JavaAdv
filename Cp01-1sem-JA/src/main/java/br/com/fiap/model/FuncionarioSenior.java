@@ -1,7 +1,5 @@
 package br.com.fiap.model;
 
-public class FuncionarioSenior extends Funcionario{
-
-
+public class FuncionarioSenior extends Funcionario {
 
 }
