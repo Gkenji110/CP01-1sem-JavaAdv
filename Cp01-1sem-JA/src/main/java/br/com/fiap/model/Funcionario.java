@@ -1,17 +1,22 @@
 package br.com.fiap.model;
 
 
-import br.com.fiap.annotations.Coluna;
-import br.com.fiap.annotations.Descricao;
-import jakarta.persistence.Entity;
-import br.com.fiap.annotations.Tabela;
-
+import br.com.fiap.annotation.Coluna;
+import br.com.fiap.annotation.Descricao;
+import jakarta.persistence.*;
+import br.com.fiap.annotation.Tabela;
 
 
 @Entity
 @Tabela(nome = "TB_FUNCIONARIO")
 @Descricao(descricao = "Tabela de funcinários da empresa")
+@SequenceGenerator(name="funcionario", sequenceName = "SQ_TB_FUNCIONARIO", allocationSize = 1)
 public class Funcionario {
+
+    @Id
+    @Coluna(nome = "ID_FUNCIONARIO")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funcionario")
+    private Integer id;
 
     @Coluna(nome = "NM_FUNCIONARIO", obrigatorio = true, tamanho = 100)
     private String nome;
@@ -22,10 +27,17 @@ public class Funcionario {
     @Coluna(nome = "VL_HORA", obrigatorio = true)
     private double valorPorHora;
 
+    public Funcionario() {}
+
     public Funcionario(String nome, double horasTrabalhadas, double valorPorHoras) {
         this.nome = nome;
         this.horasTrabalhadas = horasTrabalhadas;
         this.valorPorHora = valorPorHoras;
+    }
+
+    @PostPersist
+    private void executar() {
+        System.out.println("Executando o método..");
     }
 
     public double calcularSalario() {
@@ -40,6 +52,9 @@ public class Funcionario {
         System.out.println("Salário final:          R$ " + String.format("%.2f", calcularSalario()));
         System.out.println("===========================");
     }
+
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
 
     public String getNome() {return nome;}
     public void setNome(String nome) {this.nome = nome;}
