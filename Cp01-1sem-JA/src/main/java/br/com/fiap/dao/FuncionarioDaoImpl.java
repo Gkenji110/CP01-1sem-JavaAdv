@@ -5,8 +5,6 @@ import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.model.Funcionario;
 import jakarta.persistence.EntityManager;
 
-import javax.swing.text.html.parser.Entity;
-
 public class FuncionarioDaoImpl implements FuncionarioDao {
 
     private EntityManager em;
@@ -37,11 +35,15 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
 
     public void commit() throws CommitException {
         try {
-            em.getTransaction().begin();
+            if (!em.getTransaction().isActive()) {
+                em.getTransaction().begin();
+            }
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             throw new CommitException();
         }
     }

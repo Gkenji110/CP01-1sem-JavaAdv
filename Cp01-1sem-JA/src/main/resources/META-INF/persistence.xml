@@ -18,19 +18,19 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <!-- Dialeto, responsável por gerar o SQL nativo -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
 
             <!-- Driver do banco -->
-            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
+            <property name="jakarta.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
 
             <!-- Usuário do banco, rmxxxxxx -->
-            <property name="javax.persistence.jdbc.user" value="RM562745"/>
+            <property name="jakarta.persistence.jdbc.user" value="RM562745"/>
 
             <!-- Senha do banco, data de nascimento com 6 digitos -->
-            <property name="javax.persistence.jdbc.password" value="140101"/>
+            <property name="jakarta.persistence.jdbc.password" value="140101"/>
 
             <!-- URL do banco -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl"/>
         </properties>
     </persistence-unit>
 </persistence>
