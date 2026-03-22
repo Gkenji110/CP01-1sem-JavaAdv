@@ -8,25 +8,25 @@ import br.com.fiap.annotation.Tabela;
 
 
 @Entity
-@Tabela(nome = "TAB_FUNCIONARIO")
+@Table(name = "TAB_FUNCIONARIO") // Usando a anotação oficial da JPA!
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Explicita a herança
+@DiscriminatorColumn(name = "TIPO_FUNCIONARIO", length = 30)
 @SequenceGenerator(name="funcionario", sequenceName = "SQ_TAB_FUNCIONARIO", allocationSize = 1)
-@Descricao(descricao = "Tabela de funcinários da empresa")
 public class Funcionario {
 
     @Id
-    @Coluna(nome = "ID_FUNCIONARIO")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funcionario")
+    @Column(name = "ID_FUNCIONARIO")
     private Integer id;
 
-    @Coluna(nome = "NM_FUNCIONARIO", obrigatorio = true, tamanho = 100)
+    @Column(name = "NM_FUNCIONARIO", nullable = false, length = 100)
     private String nome;
 
-    @Coluna(nome = "NR_HORAS_TRABALHADAS", obrigatorio = true)
+    @Column(name = "NR_HORAS_TRABALHADAS", nullable = false)
     private double horasTrabalhadas;
 
-    @Coluna(nome = "VL_HORA", obrigatorio = true)
+    @Column(name = "VL_HORA", nullable = false)
     private double valorPorHora;
-
     public Funcionario() {}
 
     public Funcionario(String nome, double horasTrabalhadas, double valorPorHora) {

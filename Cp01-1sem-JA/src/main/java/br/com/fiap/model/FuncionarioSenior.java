@@ -1,5 +1,10 @@
 package br.com.fiap.model;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("SENIOR")
 public class FuncionarioSenior extends Funcionario {
 
     private double bonus;
