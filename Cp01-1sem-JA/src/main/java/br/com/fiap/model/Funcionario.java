@@ -8,9 +8,9 @@ import br.com.fiap.annotation.Tabela;
 
 
 @Entity
-@Tabela(nome = "TB_FUNCIONARIO")
+@Tabela(nome = "TAB_FUNCIONARIO")
+@SequenceGenerator(name="funcionario", sequenceName = "SQ_TAB_FUNCIONARIO", allocationSize = 1)
 @Descricao(descricao = "Tabela de funcinários da empresa")
-@SequenceGenerator(name="funcionario", sequenceName = "SQ_TB_FUNCIONARIO", allocationSize = 1)
 public class Funcionario {
 
     @Id
@@ -29,10 +29,10 @@ public class Funcionario {
 
     public Funcionario() {}
 
-    public Funcionario(String nome, double horasTrabalhadas, double valorPorHoras) {
+    public Funcionario(String nome, double horasTrabalhadas, double valorPorHora) {
         this.nome = nome;
         this.horasTrabalhadas = horasTrabalhadas;
-        this.valorPorHora = valorPorHoras;
+        this.valorPorHora = valorPorHora;
     }
 
     @PostPersist

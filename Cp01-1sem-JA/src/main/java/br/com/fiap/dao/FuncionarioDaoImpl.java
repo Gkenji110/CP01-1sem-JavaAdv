@@ -5,6 +5,8 @@ import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.model.Funcionario;
 import jakarta.persistence.EntityManager;
 
+import java.util.List;
+
 public class FuncionarioDaoImpl implements FuncionarioDao {
 
     private EntityManager em;
@@ -31,6 +33,11 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
         if (funcionario == null)
             throw new IdNaoEncontradoException("Cliente nao encontrado");
         return funcionario;
+    }
+
+    public List<Funcionario> buscarTodos() {
+        return em.createQuery("FROM Funcionario", Funcionario.class)
+                .getResultList();
     }
 
     public void commit() throws CommitException {

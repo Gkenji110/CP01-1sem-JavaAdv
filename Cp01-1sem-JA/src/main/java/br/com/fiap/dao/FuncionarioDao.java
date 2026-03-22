@@ -4,6 +4,8 @@ import br.com.fiap.exception.CommitException;
 import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.model.Funcionario;
 
+import java.util.List;
+
 public interface FuncionarioDao {
 
     void cadastrar(Funcionario funcionario);
@@ -13,6 +15,8 @@ public interface FuncionarioDao {
     void remover(int id) throws IdNaoEncontradoException;
 
     Funcionario buscarPorId(int id) throws IdNaoEncontradoException;
+
+    List<Funcionario> buscarTodos();
 
     void commit() throws CommitException;
 
