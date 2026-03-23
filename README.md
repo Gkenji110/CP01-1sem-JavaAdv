@@ -136,32 +136,38 @@ Neste teste, o sistema apaga do banco de dados o registro do funcionário sênio
 
 ### 4.1 Tabela criada/atualizada no Oracle
 
-### Print
+<img width="1020" height="400" alt="image" src="https://github.com/user-attachments/assets/7e741b0c-5138-41f5-862c-bad952e0306a" />
 
-Nesta evidência, deve ser mostrado que a tabela utilizada pelo sistema foi criada ou atualizada corretamente no Oracle a partir do mapeamento da entidade `Funcionario` e de suas subclasses.
+
+Nesta evidência, é possível visualizar que a tabela utilizada pelo sistema foi criada/atualizada corretamente no Oracle a partir do mapeamento da entidade `Funcionario` e de suas subclasses.
 
 ---
 
 ### 4.2 Registros inseridos no banco
 
-### Print
+<img width="1167" height="632" alt="image" src="https://github.com/user-attachments/assets/5263430d-d3d8-4b75-a33a-06d846605772" />
 
-Nesta evidência, deve ser possível visualizar no banco de dados os registros inseridos pelos testes de cadastro, comprovando que as operações CREATE foram realizadas com sucesso.
+
+Nesta evidência, é possível visualizar no banco de dados os registros inseridos pelos testes de cadastro, comprovando que as operações CREATE foram realizadas com sucesso.
 
 ---
 
 ### 4.3 Registros após atualização
 
-### Print
+<img width="645" height="200" alt="image" src="https://github.com/user-attachments/assets/80fcd909-6926-4cec-bfb7-788fddfcaad5" />
+<img width="883" height="537" alt="image" src="https://github.com/user-attachments/assets/1769f1cc-bf93-4c57-993a-134db8130691" />
 
-Nesta evidência, devem aparecer no banco de dados os valores modificados após as operações de atualização, principalmente as horas trabalhadas e os dados relacionados ao cálculo salarial.
 
+Neste exemplo, podemos ver o método "AtualizarPleno()" setando o número de horas trabalhados de um funcionário passado como parâmetro para 999. O mesmo foi feito, parqa fins de testes, no método equivalente para júnio e para sênior, como pode ser visto refletido no banco de dados.
 ---
 
 ### 4.4 Registros após exclusão
 
-### Print
+<img width="684" height="312" alt="image" src="https://github.com/user-attachments/assets/9f7d0067-fc4b-45ca-a931-65c7e0577bba" />
 
-Nesta evidência, deve ser mostrado que os registros removidos pelos testes de DELETE não aparecem mais na tabela, comprovando que a exclusão foi executada corretamente.
+<img width="1003" height="379" alt="image" src="https://github.com/user-attachments/assets/94e28518-6578-4ff8-be4e-6db7d897afd5" />
+
+
+Para esta evidência, criamos um método (temporário) para exemplificar a exclusão de todos os funcionários seniores.
 
 
