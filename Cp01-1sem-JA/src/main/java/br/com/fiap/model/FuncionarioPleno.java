@@ -2,11 +2,13 @@ package br.com.fiap.model;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 
 @Entity
 @DiscriminatorValue("PLENO")
 public class FuncionarioPleno extends Funcionario {
 
+    @Column(name = "VL_BONUS", nullable = true)
     private double bonus;
 
     public FuncionarioPleno() {
