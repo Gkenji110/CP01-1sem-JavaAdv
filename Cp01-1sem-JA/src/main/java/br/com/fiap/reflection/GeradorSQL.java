@@ -3,11 +3,8 @@ package br.com.fiap.reflection;
 import br.com.fiap.annotation.Coluna;
 import br.com.fiap.annotation.Descricao;
 import br.com.fiap.annotation.Tabela;
-import br.com.fiap.dao.FuncionarioDao;
-import br.com.fiap.dao.FuncionarioSeniorDao;
-import br.com.fiap.dao.FuncionarioSeniorDaoImpl;
-import br.com.fiap.model.Funcionario;
-import br.com.fiap.model.FuncionarioSenior;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -15,19 +12,24 @@ import java.util.List;
 
 public class GeradorSQL {
 
-    private Tabela getTabela(Class<?> clazz) {
+    private String getNomeTabela(Class<?> clazz) {
 
         Class<?> classeAtual = clazz;
 
-        while (classeAtual != null && !classeAtual.isAnnotationPresent(Tabela.class)) {
+        while (classeAtual != null) {
+            if (classeAtual.isAnnotationPresent(Tabela.class)) {
+                return classeAtual.getAnnotation(Tabela.class).nome();
+            }
+            if (classeAtual.isAnnotationPresent(Table.class)) {
+                String nome = classeAtual.getAnnotation(Table.class).name();
+                if (nome != null && !nome.isBlank()) {
+                    return nome;
+                }
+            }
             classeAtual = classeAtual.getSuperclass();
         }
 
-        if (classeAtual == null) {
-            throw new RuntimeException("Nenhuma classe com @Table encontrada");
-        }
-
-        return classeAtual.getAnnotation(Tabela.class);
+        throw new RuntimeException("Nenhuma classe com @Tabela ou @Table encontrada");
     }
 
     private List<Field> getTodosCampos(Class<?> clazz) {
@@ -44,27 +46,43 @@ public class GeradorSQL {
         return campos;
     }
 
+    private List<String> getNomesColunas(List<Field> campos) {
+        List<String> colunas = new ArrayList<>();
+
+        for (Field campo : campos) {
+            if (campo.isAnnotationPresent(Coluna.class)) {
+                colunas.add(campo.getAnnotation(Coluna.class).nome());
+            } else if (campo.isAnnotationPresent(Column.class)) {
+                String nome = campo.getAnnotation(Column.class).name();
+                if (nome != null && !nome.isBlank()) {
+                    colunas.add(nome);
+                }
+            }
+        }
+
+        return colunas;
+    }
+
     public String gerarSelect(Object obj) {
 
         Class<?> clazz = obj.getClass();
 
-        Tabela tabela = getTabela(clazz);
+        String tabela = getNomeTabela(clazz);
 
         StringBuilder sql = new StringBuilder("SELECT ");
 
-        List<Field> campos = getTodosCampos(clazz);
+        List<String> colunas = getNomesColunas(getTodosCampos(clazz));
 
-        for (Field campo : campos) {
-
-            if (campo.isAnnotationPresent(Coluna.class)) {
-                Coluna col = campo.getAnnotation(Coluna.class);
-                sql.append(col.nome()).append(", ");
+        if (colunas.isEmpty()) {
+            sql.append("*");
+        } else {
+            for (String coluna : colunas) {
+                sql.append(coluna).append(", ");
             }
+            sql.delete(sql.length() - 2, sql.length());
         }
 
-        sql.delete(sql.length() - 2, sql.length());
-
-        sql.append(" FROM ").append(tabela.nome());
+        sql.append(" FROM ").append(tabela);
 
         return sql.toString();
     }
@@ -73,29 +91,26 @@ public class GeradorSQL {
 
         Class<?> clazz = obj.getClass();
 
-        Tabela tabela = getTabela(clazz);
+        String tabela = getNomeTabela(clazz);
 
         StringBuilder colunas = new StringBuilder();
         StringBuilder valores = new StringBuilder();
 
-        List<Field> campos = getTodosCampos(clazz);
+        List<String> nomesColunas = getNomesColunas(getTodosCampos(clazz));
 
-        for (Field campo : campos) {
+        if (nomesColunas.isEmpty()) {
+            throw new RuntimeException("Nenhuma coluna mapeada com @Coluna ou @Column");
+        }
 
-            if (campo.isAnnotationPresent(Coluna.class)) {
-
-                Coluna col = campo.getAnnotation(Coluna.class);
-
-                colunas.append(col.nome()).append(", ");
-
-                valores.append("?").append(", ");
-            }
+        for (String coluna : nomesColunas) {
+            colunas.append(coluna).append(", ");
+            valores.append("?").append(", ");
         }
 
         colunas.delete(colunas.length() - 2, colunas.length());
         valores.delete(valores.length() - 2, valores.length());
 
-        return "INSERT INTO " + tabela.nome() +
+        return "INSERT INTO " + tabela +
                 " (" + colunas + ") VALUES (" + valores + ")";
     }
 
@@ -103,22 +118,20 @@ public class GeradorSQL {
 
         Class<?> clazz = obj.getClass();
 
-        Tabela tabela = getTabela(clazz);
+        String tabela = getNomeTabela(clazz);
 
         StringBuilder sql = new StringBuilder("UPDATE ");
 
-        sql.append(tabela.nome()).append(" SET ");
+        sql.append(tabela).append(" SET ");
 
-        List<Field> campos = getTodosCampos(clazz);
+        List<String> colunas = getNomesColunas(getTodosCampos(clazz));
 
-        for (Field campo : campos) {
+        if (colunas.isEmpty()) {
+            throw new RuntimeException("Nenhuma coluna mapeada com @Coluna ou @Column");
+        }
 
-            if (campo.isAnnotationPresent(Coluna.class)) {
-
-                Coluna col = campo.getAnnotation(Coluna.class);
-
-                sql.append(col.nome()).append(" = ?, ");
-            }
+        for (String coluna : colunas) {
+            sql.append(coluna).append(" = ?, ");
         }
 
         sql.delete(sql.length() - 2, sql.length());
@@ -132,9 +145,9 @@ public class GeradorSQL {
 
         Class<?> clazz = obj.getClass();
 
-        Tabela tabela = getTabela(clazz);
+        String tabela = getNomeTabela(clazz);
 
-        return "DELETE FROM " + tabela.nome() +
+        return "DELETE FROM " + tabela +
                 " WHERE " + where;
     }
 

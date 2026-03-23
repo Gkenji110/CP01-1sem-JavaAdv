@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FuncionarioDaoImpl implements FuncionarioDao {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public FuncionarioDaoImpl(EntityManager em){
         this.em = em;
@@ -20,7 +20,7 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
     }
 
     public void atualizar(Funcionario funcionario) {
-        em.persist(funcionario);
+        em.merge(funcionario);
     }
 
     public void remover(int id) throws IdNaoEncontradoException {
@@ -47,7 +47,6 @@ public class FuncionarioDaoImpl implements FuncionarioDao {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }

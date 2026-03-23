@@ -17,8 +17,7 @@
              -->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
-            <!-- Dialeto, responsável por gerar o SQL nativo -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
+            <!-- Dialeto escolhido automaticamente pelo Hibernate para Oracle -->
 
             <!-- Driver do banco -->
             <property name="jakarta.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />

@@ -11,8 +11,12 @@ public class FuncionarioSenior extends Funcionario {
 
     public FuncionarioSenior() {}
 
-    public FuncionarioSenior(String nome, double horasTrabalhadas, double valorPorHoras, double bonus) {
-        super(nome, horasTrabalhadas, valorPorHoras);
+    public FuncionarioSenior(String nome, double horasTrabalhadas, double valorPorHoras, String cargo) {
+        super(nome, horasTrabalhadas, valorPorHoras, cargo);
+    }
+
+    public FuncionarioSenior(String nome, double horasTrabalhadas, double valorPorHoras, String cargo, double bonus) {
+        super(nome, horasTrabalhadas, valorPorHoras, cargo);
         this.bonus = bonus;
     }
 
@@ -27,12 +31,12 @@ public class FuncionarioSenior extends Funcionario {
     public void imprimirInformacao() {
         System.out.println("Informações do funcionário sênior");
         System.out.println("Nome:                   " + getNome());
+        System.out.println("Cargo:                  " + getCargo());
         System.out.println("Horas trabalhadas:      " + getHorasTrabalhadas() + "h");
         System.out.println("Valor por hora:         R$ " + String.format("%.2f", getValorPorHora()));
         System.out.println("Bônus por 15 horas:     R$ " + String.format("%.2f", bonus));
         int quantidadeBonus = (int) (getHorasTrabalhadas() / 15);
         System.out.println("Quantidade de Bônus:       " + quantidadeBonus + "x");
-        System.out.println("Salário final:          R$ " + String.format("%.2f", calcularSalario()));
         System.out.println("===========================");
     }
 

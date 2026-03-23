@@ -5,13 +5,51 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("PLENO")
-public class FuncionarioPleno extends Funcionario{
+public class FuncionarioPleno extends Funcionario {
+
+    private double bonus;
 
     public FuncionarioPleno() {
-
     }
 
     public FuncionarioPleno(String nome, double horasTrabalhadas, double valorPorHora) {
         super(nome, horasTrabalhadas, valorPorHora);
+    }
+
+    public FuncionarioPleno(String nome, double horasTrabalhadas, double valorPorHora, String cargo) {
+        super(nome, horasTrabalhadas, valorPorHora, cargo);
+    }
+
+    public FuncionarioPleno(String nome, double horasTrabalhadas, double valorPorHora, String cargo, double bonus) {
+        super(nome, horasTrabalhadas, valorPorHora, cargo);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public double calcularSalario() {
+        double salarioBase = super.calcularSalario();
+        int quantidadeBonus = (int) (getHorasTrabalhadas() / 30);
+        return salarioBase + (quantidadeBonus * bonus);
+    }
+
+    @Override
+    public void imprimirInformacao() {
+        System.out.println("Informações do funcionário pleno");
+        System.out.println("Nome:                   " + getNome());
+        System.out.println("Cargo:                  " + getCargo());
+        System.out.println("Horas trabalhadas:      " + getHorasTrabalhadas() + "h");
+        System.out.println("Valor por hora:         R$ " + String.format("%.2f", getValorPorHora()));
+        System.out.println("Bônus por 30 horas:     R$ " + String.format("%.2f", bonus));
+        int quantidadeBonus = (int) (getHorasTrabalhadas() / 30);
+        System.out.println("Quantidade de Bônus:    " + quantidadeBonus + "x");
+        System.out.println("===========================");
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
     }
 }
